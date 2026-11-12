@@ -18,7 +18,7 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      -  
+      
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
@@ -29,6 +29,7 @@ jobs:
           sdkmanager --sdk_root="$ANDROID_HOME" "platform-tools"
           sdkmanager --sdk_root="$ANDROID_HOME" "platforms;android-35"
           sdkmanager --sdk_root="$ANDROID_HOME" "build-tools;35.0.0"
+
  
 
       - name: Set up Gradle
