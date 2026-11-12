@@ -1,0 +1,43 @@
+
+name: Build JANADESH APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Extract and build
+        run: |
+          unzip JANADESH_Android_Project.zip
+          cd JANADESH_Android_Project
+          gradle --no-daemon assembleDebug
+          mkdir -p ../apk-output
+          cp app/build/outputs/apk/debug/app-debug.apk ../apk-output/JANADESH-debug.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: JANADESH-debug-apk
+          path: apk-output/JANADESH-debug.apk
